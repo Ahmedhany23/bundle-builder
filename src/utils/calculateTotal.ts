@@ -32,13 +32,3 @@ export function calculateSavings(
   );
 }
 
-export function getMonthlyTotal(
-  items: SelectedItem[],
-  products: Product[],
-): number {
-  return items.reduce((sum, item) => {
-    const product = products.find((p) => p.id === item.productId);
-    if (!product) return sum;
-    return sum + product.price * item.quantity;
-  }, 0);
-}
