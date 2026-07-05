@@ -5,7 +5,6 @@ import {
   calculateTotal,
   calculateCompareAtTotal,
   calculateSavings,
-  getMonthlyTotal,
 } from "../../utils/calculateTotal";
 import productsData from "../../data/products.json";
 import type { Product } from "../../types";
@@ -23,7 +22,6 @@ export function ReviewPromoRow() {
   const total = calculateTotal(state.items, products);
   const compareAtTotal = calculateCompareAtTotal(state.items, products);
   const savings = calculateSavings(state.items, products);
-  const monthlyTotal = getMonthlyTotal(state.items, products);
 
   const handleCheckout = () => {
     alert("This is a prototype, checkout isn't wired up yet.");
@@ -58,7 +56,7 @@ export function ReviewPromoRow() {
           </div>
 
           <div className="price-summary">
-            <div className="pill">as low as ${monthlyTotal.toFixed(2)} /mo</div>
+            <div className="pill">as low as ${total.toFixed(2)} /mo</div>
             <PriceDisplay
               price={total}
               compareAtPrice={compareAtTotal}
