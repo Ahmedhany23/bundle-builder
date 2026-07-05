@@ -25,9 +25,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const isPlan = product.category === "plan";
 
   const handleChange = (next: number) => {
-    if (next > product.maxQuantity) {
-      return;
-    }
+    if (next > product.maxQuantity) return;
+    if (next < product.minQuantity) return;
 
     dispatch({
       type: "SET_QUANTITY",

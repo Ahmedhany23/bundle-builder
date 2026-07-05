@@ -21,9 +21,8 @@ export function ReviewLineItem({
   const { dispatch } = useBundle();
 
   const handleChange = (next: number) => {
-    if (next > product.maxQuantity) {
-      return;
-    }
+    if (next > product.maxQuantity) return;
+    if (next < product.minQuantity) return;
 
     dispatch({
       type: "SET_QUANTITY",
