@@ -23,6 +23,8 @@ function key(productId: string, variantId?: string) {
 export function bundleReducer(state: BundleState, action: Action): BundleState {
   switch (action.type) {
     case "SET_QUANTITY": {
+
+      //Get index of existing item
       const existingIndex = state.items.findIndex(
         (i) =>
           key(i.productId, i.variantId) ===
@@ -30,22 +32,31 @@ export function bundleReducer(state: BundleState, action: Action): BundleState {
       );
 
       const next = [...state.items];
+
+      // if product already exists, update quantity
       if (existingIndex >= 0) {
+        //if action is zero, remove item from shallow copy
+
         if (action.quantity <= 0) {
           next.splice(existingIndex, 1);
         } else {
+          // if action is greater than zero, update quantity
           next[existingIndex] = {
             ...next[existingIndex],
             quantity: action.quantity,
           };
         }
-      } else if (action.quantity > 0) {
+      }
+      // if product doesn't exist, add the product
+      else if (action.quantity > 0) {
         next.push({
           productId: action.productId,
           variantId: action.variantId,
           quantity: action.quantity,
         });
       }
+
+      //Return updated state
       return { items: next };
     }
     default:
