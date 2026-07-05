@@ -15,12 +15,6 @@ export function getSelectedCount(items: SelectedItem[]) {
   return items.filter((i) => i.quantity > 0).length;
 }
 
-export function calculateTotal(items: SelectedItem[], products: Product[]) {
-  return items.reduce((sum, item) => {
-    const product = products.find((p) => p.id === item.productId);
-    return sum + (product ? product.price * item.quantity : 0);
-  }, 0);
-}
 
 export function getSelectedCountForCategory(
   items: SelectedItem[],
