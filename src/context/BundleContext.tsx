@@ -1,8 +1,8 @@
-import { createContext, useReducer, useEffect, useContext } from "react";
 import type { ReactNode } from "react";
+import { createContext, useContext, useReducer } from "react";
 
+import { loadFromStorage } from "../hooks/useLocalStorage";
 import type { BundleState } from "../types";
-import { loadFromStorage, saveToStorage } from "../hooks/useLocalStorage";
 
 type Action = {
   type: "SET_QUANTITY";
@@ -69,9 +69,6 @@ export function BundleProvider({ children }: { children: ReactNode }) {
     return loadFromStorage({ items: [] });
   });
 
-  useEffect(() => {
-    saveToStorage(state);
-  }, [state]);
 
   return (
     <BundleContext.Provider value={{ state, dispatch }}>
