@@ -1,8 +1,15 @@
 import type { ReactNode } from "react";
-import { createContext, useContext, useReducer } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+} from "react";
 
-import { loadFromStorage } from "../hooks/useLocalStorage";
+import { loadFromStorage, saveToStorage } from "../hooks/useLocalStorage";
 import type { BundleState } from "../types";
+import debounce from "debounce";
 
 type Action = {
   type: "SET_QUANTITY";
@@ -77,6 +84,18 @@ export function BundleProvider({ children }: { children: ReactNode }) {
     return loadFromStorage({ items: [] });
   });
 
+  const debouncedSave = useMemo(
+    () => debounce((state: BundleState) => saveToStorage(state), 300),
+    [],
+  );
+
+  useEffect(() => {
+    debouncedSave(state);
+  }, [state, debouncedSave]);
+
+  useEffect(() => {
+    return () => debouncedSave.clear();
+  }, [debouncedSave]);
 
   return (
     <BundleContext.Provider value={{ state, dispatch }}>
