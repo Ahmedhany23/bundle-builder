@@ -55,11 +55,14 @@ export function AccordionStep({
           </svg>
         </div>
       </button>
-      {isOpen && (
-        <div id={panelId} role="region" aria-labelledby={triggerId}>
-          {children}
-        </div>
-      )}
+      <div
+        id={panelId}
+        hidden={!isOpen}
+        role="region"
+        aria-labelledby={triggerId}
+      >
+        {children}
+      </div>
     </section>
   );
 }
