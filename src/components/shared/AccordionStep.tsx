@@ -21,12 +21,22 @@ export function AccordionStep({
   onToggle,
   children,
 }: AccordionStepProps) {
+  const panelId = `step-panel-${stepNumber}`;
+  const triggerId = `step-trigger-${stepNumber}`;
+
   return (
     <section className={`step ${isOpen ? "active" : ""}`}>
       <div className="step-label">
         STEP {stepNumber} OF {totalSteps}
       </div>
-      <div className="step-row" onClick={onToggle}>
+      <button
+        id={triggerId}
+        className="step-row"
+        type="button"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+      >
         <div className="step-left">
           {icon}
           <h2 className="step-name">{title}</h2>
@@ -44,8 +54,12 @@ export function AccordionStep({
             <path d="M6 2.6 1.4 7.2h9.2L6 2.6Z" />
           </svg>
         </div>
-      </div>
-      {isOpen && children}
+      </button>
+      {isOpen && (
+        <div id={panelId} role="region" aria-labelledby={triggerId}>
+          {children}
+        </div>
+      )}
     </section>
   );
 }
