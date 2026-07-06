@@ -56,7 +56,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <p className="product-copy">
             {product.description}{" "}
             {product.learnMoreUrl && (
-              <a href={product.learnMoreUrl} target="_blank">
+              <a href={product.learnMoreUrl} target="_blank" rel="noopener noreferrer">
                 Learn More
               </a>
             )}
