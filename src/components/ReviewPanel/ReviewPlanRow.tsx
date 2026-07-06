@@ -29,7 +29,7 @@ export function ReviewPlanRow() {
       </p>
       <div className="plan-row">
         <div className="plan-brand">
-          <img src={WyzeIcon} alt="Wayze icon" width={14} height={17} />
+          <img src={WyzeIcon} alt="Wyze icon" width={14} height={17} />
           <div className="plan-name">
             Cam <span className="accent">Unlimited</span>
           </div>
