@@ -21,14 +21,13 @@ export function ReviewLineItem({
   const { dispatch } = useBundle();
 
   const handleChange = (next: number) => {
-    if (next > product.maxQuantity) return;
-    if (next < product.minQuantity) return;
-
     dispatch({
       type: "SET_QUANTITY",
       productId: product.id,
       variantId,
       quantity: next,
+      minQuantity: product.minQuantity,
+      maxQuantity: product.maxQuantity,
     });
   };
 
@@ -60,8 +59,7 @@ export function ReviewLineItem({
             ariaLabel={`Decrease quantity for ${product.title}`}
             icon={<img src={MinusIcon} alt="Minus icon" />}
             onClick={() => handleChange(quantity - 1)}
-            style={{ background: product.required ? "#F1F1F2" : "white" }}
-            disabled={product.required}
+            style={{ background: "white" }}
           />
           <span className="count">{quantity}</span>
           <Button
@@ -71,8 +69,7 @@ export function ReviewLineItem({
             ariaLabel={`Increase quantity for ${product.title}`}
             icon={<img src={PlusIcon} alt="Plus icon" />}
             onClick={() => handleChange(quantity + 1)}
-            disabled={product.required}
-            style={{ background: product.required ? "#F1F1F2" : "white" }}
+            style={{ background: "white" }}
           />
         </div>
 

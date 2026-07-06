@@ -9,6 +9,8 @@ type Action = {
   productId: string;
   variantId?: string;
   quantity: number;
+  minQuantity: number;
+  maxQuantity: number;
 };
 
 export const BundleContext = createContext<{
@@ -23,6 +25,12 @@ function key(productId: string, variantId?: string) {
 export function bundleReducer(state: BundleState, action: Action): BundleState {
   switch (action.type) {
     case "SET_QUANTITY": {
+      const minQuantity = action.minQuantity;
+      const maxQuantity = action.maxQuantity;
+      const normalizedQuantity =
+        action.quantity <= 0
+          ? 0
+          : Math.min(maxQuantity, Math.max(minQuantity, action.quantity));
 
       //Get index of existing item
       const existingIndex = state.items.findIndex(
@@ -37,22 +45,22 @@ export function bundleReducer(state: BundleState, action: Action): BundleState {
       if (existingIndex >= 0) {
         //if action is zero, remove item from shallow copy
 
-        if (action.quantity <= 0) {
+        if (normalizedQuantity <= 0) {
           next.splice(existingIndex, 1);
         } else {
           // if action is greater than zero, update quantity
           next[existingIndex] = {
             ...next[existingIndex],
-            quantity: action.quantity,
+            quantity: normalizedQuantity,
           };
         }
       }
       // if product doesn't exist, add the product
-      else if (action.quantity > 0) {
+      else if (normalizedQuantity > 0) {
         next.push({
           productId: action.productId,
           variantId: action.variantId,
-          quantity: action.quantity,
+          quantity: normalizedQuantity,
         });
       }
 
