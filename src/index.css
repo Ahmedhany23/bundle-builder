@@ -344,19 +344,6 @@ body {
   flex-wrap: wrap;
 }
 
-.swatch {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 30px;
-  padding: 0 10px;
-  border-radius: 4px;
-  border: 1px solid #d7d7df;
-  background: #fff;
-  font-size: 0.82rem;
-  color: #40434a;
-}
-
 .card-footer {
   display: flex;
   align-items: center;
@@ -746,6 +733,7 @@ body {
 
 .promo-right {
   width: 100%;
+  text-align: right;
 }
 
 .returns-price-container {
@@ -773,6 +761,7 @@ body {
   font-size: 18px;
   color: var(--line);
 }
+
 .returns-badge-description {
   font-family: "Gilroy-Regular", sans-serif;
   font-size: 18px;
@@ -784,13 +773,16 @@ body {
     align-items: start;
     text-align: left;
   }
+
   .returns-badge-image {
     width: 131px;
     height: 131px;
   }
+
   .returns-badge-content {
     display: block;
   }
+
   .returns-price-container {
     flex-direction: column;
     align-items: flex-end;
@@ -801,16 +793,6 @@ body {
     display: flex;
     justify-content: space-between;
   }
-}
-
-.seal {
-  width: 118px;
-  height: 118px;
-  flex: 0 0 auto;
-}
-
-.promo-right {
-  text-align: right;
 }
 
 .pill {
@@ -825,14 +807,6 @@ body {
   font-size: clamp(0.75rem, 0.6571rem + 0.381vw, 1rem);
   font-family: "Gilroy-Medium", sans-serif;
   margin-bottom: 14px;
-}
-
-.totals {
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-end;
-  gap: 14px;
-  margin-bottom: 10px;
 }
 
 .saving {
@@ -880,10 +854,5 @@ body {
 
   .step-grid {
     grid-template-columns: 1fr;
-  }
-
-  .button--step {
-    min-width: 0;
-    width: calc(100% - 36px);
   }
 }
