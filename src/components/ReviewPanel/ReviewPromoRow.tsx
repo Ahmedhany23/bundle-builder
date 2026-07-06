@@ -58,7 +58,9 @@ export function ReviewPromoRow() {
           </div>
 
           <div className="price-summary">
-            <div className="pill">as low as ${monthlyTotal.toFixed(2)} /mo</div>
+            <div className="pill" aria-live="polite">
+              as low as ${monthlyTotal.toFixed(2)} /mo
+            </div>
             <PriceDisplay
               price={total}
               compareAtPrice={compareAtTotal}

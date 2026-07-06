@@ -40,6 +40,7 @@ export function PriceDisplay({
 
   return (
     <div
+    
       className={[
         "price-display",
         `price-display--${direction}`,
@@ -50,6 +51,7 @@ export function PriceDisplay({
         .filter(Boolean)
         .join(" ")}
       style={style}
+      aria-live="polite"
     >
       {showCompareAt && (
         <span className="price-display__compare">
