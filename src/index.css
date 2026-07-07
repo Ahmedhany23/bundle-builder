@@ -431,6 +431,11 @@ body {
   transition: all 0.2s ease;
 }
 
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .button--primary {
   background: var(--accent);
   color: #fff;

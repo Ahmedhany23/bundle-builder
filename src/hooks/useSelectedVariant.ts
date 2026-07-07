@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Product } from "../types";
 import { useBundle } from "../context/BundleContext";
 
@@ -13,6 +13,14 @@ export function useSelectedVariant(product: Product) {
   const initial = restoredVariant ?? product.variants?.[0]?.id;
 
   const [activeVariantId, setActiveVariantId] = useState(initial);
+
+  useEffect(() => {
+    if (restoredVariant) {
+      setActiveVariantId(restoredVariant);
+    } else {
+      setActiveVariantId(product.variants?.[0]?.id);
+    }
+  }, [restoredVariant, product.variants]);
 
   return { activeVariantId, setActiveVariantId };
 }

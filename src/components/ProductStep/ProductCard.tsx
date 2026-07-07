@@ -102,6 +102,7 @@ export function ProductCard({ product }: ProductCardProps) {
                   ariaLabel={`Decrease quantity for ${product.title}`}
                   icon={<img src={MinusIcon} alt="Minus icon" />}
                   onClick={() => handleChange(quantity - 1)}
+                  disabled={quantity <= product.minQuantity}
                 />
                 <span className="count">{quantity}</span>
                 <Button
@@ -111,6 +112,7 @@ export function ProductCard({ product }: ProductCardProps) {
                   ariaLabel={`Increase quantity for ${product.title}`}
                   icon={<img src={PlusIcon} alt="Plus icon" />}
                   onClick={() => handleChange(quantity + 1)}
+                  disabled={quantity >= product.maxQuantity}
                 />
               </>
             ) : (

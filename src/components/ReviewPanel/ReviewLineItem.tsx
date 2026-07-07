@@ -60,6 +60,7 @@ export function ReviewLineItem({
             icon={<img src={MinusIcon} alt="Minus icon" />}
             onClick={() => handleChange(quantity - 1)}
             style={{ background: "white" }}
+            disabled={quantity <= product.minQuantity}
           />
           <span className="count">{quantity}</span>
           <Button
@@ -70,6 +71,7 @@ export function ReviewLineItem({
             icon={<img src={PlusIcon} alt="Plus icon" />}
             onClick={() => handleChange(quantity + 1)}
             style={{ background: "white" }}
+            disabled={quantity >= product.maxQuantity}
           />
         </div>
 

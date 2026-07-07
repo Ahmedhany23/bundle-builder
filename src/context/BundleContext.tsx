@@ -35,9 +35,9 @@ export function bundleReducer(state: BundleState, action: Action): BundleState {
       const minQuantity = action.minQuantity;
       const maxQuantity = action.maxQuantity;
       const normalizedQuantity =
-        action.quantity <= 0
-          ? 0
-          : Math.min(maxQuantity, Math.max(minQuantity, action.quantity));
+        action.quantity < minQuantity
+          ? minQuantity
+          : Math.min(maxQuantity, action.quantity);
 
       //Get index of existing item
       const existingIndex = state.items.findIndex(
@@ -50,8 +50,7 @@ export function bundleReducer(state: BundleState, action: Action): BundleState {
 
       // if product already exists, update quantity
       if (existingIndex >= 0) {
-        //if action is zero, remove item from shallow copy
-
+        //if action is zero or less, remove item from shallow copy (if allowed by minQuantity)
         if (normalizedQuantity <= 0) {
           next.splice(existingIndex, 1);
         } else {
@@ -79,9 +78,16 @@ export function bundleReducer(state: BundleState, action: Action): BundleState {
   }
 }
 
+const DEFAULT_SEED_ITEMS = [
+  { productId: "wyze-sense-hub", quantity: 1 },
+  { productId: "wyze-sense-motion-sensor", quantity: 1 },
+  { productId: "wyze-microsd-256gb", quantity: 1 },
+  { productId: "cam-unlimited-plan", quantity: 1 },
+];
+
 export function BundleProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(bundleReducer, { items: [] }, () => {
-    return loadFromStorage({ items: [] });
+  const [state, dispatch] = useReducer(bundleReducer, { items: DEFAULT_SEED_ITEMS }, () => {
+    return loadFromStorage({ items: DEFAULT_SEED_ITEMS });
   });
 
   const debouncedSave = useMemo(
