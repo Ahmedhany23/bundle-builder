@@ -48,7 +48,7 @@ export function ReviewLineItem({
             src={product.image}
             alt={product.title}
             loading="lazy"
-            width={713}
+            width={41}
           />
         </div>
         <p className="product-name">
