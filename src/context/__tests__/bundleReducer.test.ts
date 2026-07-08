@@ -10,6 +10,7 @@ type Action = {
   quantity: number;
   minQuantity: number;
   maxQuantity: number;
+  required: boolean;
 };
 
 function makeState(items: SelectedItem[] = []): BundleState {
@@ -26,6 +27,7 @@ describe("bundleReducer", () => {
         quantity: 2,
         minQuantity: 0,
         maxQuantity: 10,
+        required: false,
       };
       const result = bundleReducer(state, action);
       expect(result.items).toEqual([
@@ -41,6 +43,7 @@ describe("bundleReducer", () => {
         quantity: 0,
         minQuantity: 0,
         maxQuantity: 10,
+        required: false,
       };
       const result = bundleReducer(state, action);
       expect(result.items).toEqual([]);
@@ -54,6 +57,7 @@ describe("bundleReducer", () => {
         quantity: 5,
         minQuantity: 0,
         maxQuantity: 10,
+        required: false,
       };
       const result = bundleReducer(state, action);
       expect(result.items).toEqual([{ productId: "p1", quantity: 5 }]);
@@ -67,12 +71,13 @@ describe("bundleReducer", () => {
         quantity: 0,
         minQuantity: 0,
         maxQuantity: 10,
+        required: false,
       };
       const result = bundleReducer(state, action);
       expect(result.items).toEqual([]);
     });
 
-    it("clamps quantity up to minQuantity when below it", () => {
+    it("clamps quantity up to minQuantity when below it (required product)", () => {
       const state = makeState([]);
       const action: Action = {
         type: "SET_QUANTITY",
@@ -80,11 +85,26 @@ describe("bundleReducer", () => {
         quantity: 1,
         minQuantity: 3,
         maxQuantity: 10,
+        required: true,
       };
       const result = bundleReducer(state, action);
       expect(result.items).toEqual([
         { productId: "p1", variantId: undefined, quantity: 3 },
       ]);
+    });
+
+    it("does NOT remove an existing item when required, even at quantity 0 — clamps to minQuantity instead", () => {
+      const state = makeState([{ productId: "p1", quantity: 3 }]);
+      const action: Action = {
+        type: "SET_QUANTITY",
+        productId: "p1",
+        quantity: 0,
+        minQuantity: 3,
+        maxQuantity: 10,
+        required: true,
+      };
+      const result = bundleReducer(state, action);
+      expect(result.items).toEqual([{ productId: "p1", quantity: 3 }]);
     });
 
     it("clamps quantity down to maxQuantity when above it", () => {
@@ -95,6 +115,7 @@ describe("bundleReducer", () => {
         quantity: 20,
         minQuantity: 0,
         maxQuantity: 10,
+        required: false,
       };
       const result = bundleReducer(state, action);
       expect(result.items).toEqual([
@@ -102,24 +123,7 @@ describe("bundleReducer", () => {
       ]);
     });
 
-    it("removes item even when minQuantity is positive, if requested quantity is <= 0", () => {
-      // Note: normalizedQuantity is computed BEFORE checking existingIndex,
-      // so if action.quantity (e.g. 0) < minQuantity (e.g. 3), it gets
-      // clamped UP to minQuantity, meaning it will NOT be removed.
-      // This test documents that clamping happens first.
-      const state = makeState([{ productId: "p1", quantity: 3 }]);
-      const action: Action = {
-        type: "SET_QUANTITY",
-        productId: "p1",
-        quantity: 0,
-        minQuantity: 3,
-        maxQuantity: 10,
-      };
-      const result = bundleReducer(state, action);
-      // quantity 0 gets normalized up to minQuantity (3), so item stays
-      // with quantity 3, NOT removed.
-      expect(result.items).toEqual([{ productId: "p1", quantity: 3 }]);
-    });
+
 
     it("treats different variantIds for the same productId as distinct items", () => {
       const state = makeState([
@@ -132,6 +136,7 @@ describe("bundleReducer", () => {
         quantity: 3,
         minQuantity: 0,
         maxQuantity: 10,
+        required: false,
       };
       const result = bundleReducer(state, action);
       expect(result.items).toEqual([
@@ -152,6 +157,7 @@ describe("bundleReducer", () => {
         quantity: 9,
         minQuantity: 0,
         maxQuantity: 10,
+        required: false,
       };
       const result = bundleReducer(state, action);
       expect(result.items).toEqual([
@@ -169,6 +175,7 @@ describe("bundleReducer", () => {
         quantity: 5,
         minQuantity: 0,
         maxQuantity: 10,
+        required: false,
       };
       const result = bundleReducer(state, action);
       expect(result.items).toEqual([
@@ -185,6 +192,7 @@ describe("bundleReducer", () => {
         quantity: 5,
         minQuantity: 0,
         maxQuantity: 10,
+        required: false,
       };
       const result = bundleReducer(state, action);
       expect(result).not.toBe(state);
