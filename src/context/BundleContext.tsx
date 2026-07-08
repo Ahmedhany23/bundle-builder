@@ -18,6 +18,7 @@ type Action = {
   quantity: number;
   minQuantity: number;
   maxQuantity: number;
+  required: boolean;
 };
 
 export const BundleContext = createContext<{
@@ -32,12 +33,13 @@ function key(productId: string, variantId?: string) {
 export function bundleReducer(state: BundleState, action: Action): BundleState {
   switch (action.type) {
     case "SET_QUANTITY": {
-      const minQuantity = action.minQuantity;
-      const maxQuantity = action.maxQuantity;
-      const normalizedQuantity =
-        action.quantity < minQuantity
-          ? minQuantity
-          : Math.min(maxQuantity, action.quantity);
+      //Normalize quantity to be within min/max range, or zero if not required
+      const normalizedQuantity = action.required
+        ? Math.max(
+            action.minQuantity,
+            Math.min(action.maxQuantity, action.quantity),
+          )
+        : Math.max(0, Math.min(action.maxQuantity, action.quantity));
 
       //Get index of existing item
       const existingIndex = state.items.findIndex(
@@ -50,8 +52,8 @@ export function bundleReducer(state: BundleState, action: Action): BundleState {
 
       // if product already exists, update quantity
       if (existingIndex >= 0) {
-        //if action is zero or less, remove item from shallow copy (if allowed by minQuantity)
-        if (normalizedQuantity <= 0) {
+        // if action is zero, remove the product if not required
+        if (!action.required && normalizedQuantity <= 0) {
           next.splice(existingIndex, 1);
         } else {
           // if action is greater than zero, update quantity
@@ -80,15 +82,16 @@ export function bundleReducer(state: BundleState, action: Action): BundleState {
 
 const DEFAULT_SEED_ITEMS = [
   { productId: "wyze-sense-hub", quantity: 1 },
-  { productId: "wyze-sense-motion-sensor", quantity: 1 },
-  { productId: "wyze-microsd-256gb", quantity: 1 },
-  { productId: "cam-unlimited-plan", quantity: 1 },
 ];
 
 export function BundleProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(bundleReducer, { items: DEFAULT_SEED_ITEMS }, () => {
-    return loadFromStorage({ items: DEFAULT_SEED_ITEMS });
-  });
+  const [state, dispatch] = useReducer(
+    bundleReducer,
+    { items: DEFAULT_SEED_ITEMS },
+    () => {
+      return loadFromStorage({ items: DEFAULT_SEED_ITEMS });
+    },
+  );
 
   const debouncedSave = useMemo(
     () => debounce((state: BundleState) => saveToStorage(state), 300),

@@ -28,6 +28,7 @@ export function ReviewLineItem({
       quantity: next,
       minQuantity: product.minQuantity,
       maxQuantity: product.maxQuantity,
+      required: product.required,
     });
   };
 
@@ -43,7 +44,12 @@ export function ReviewLineItem({
     <div className="line-item">
       <div className="product">
         <div className="thumb">
-          <img src={product.image} alt={product.title} loading="lazy" width={713} />
+          <img
+            src={product.image}
+            alt={product.title}
+            loading="lazy"
+            width={713}
+          />
         </div>
         <p className="product-name">
           {product.title}{" "}
@@ -57,10 +63,18 @@ export function ReviewLineItem({
             variant="decrement"
             size="sm"
             ariaLabel={`Decrease quantity for ${product.title}`}
-            icon={<img src={MinusIcon} alt="Minus icon" loading="lazy" width={8} height={10} />}
+            icon={
+              <img
+                src={MinusIcon}
+                alt="Minus icon"
+                loading="lazy"
+                width={8}
+                height={10}
+              />
+            }
             onClick={() => handleChange(quantity - 1)}
             style={{ background: "white" }}
-            disabled={quantity <= product.minQuantity}
+            disabled={product.required || quantity <= product.minQuantity}
           />
           <span className="count">{quantity}</span>
           <Button
@@ -68,7 +82,15 @@ export function ReviewLineItem({
             variant="increment"
             size="sm"
             ariaLabel={`Increase quantity for ${product.title}`}
-            icon={<img src={PlusIcon} alt="Plus icon" loading="lazy" width={8} height={8} />}
+            icon={
+              <img
+                src={PlusIcon}
+                alt="Plus icon"
+                loading="lazy"
+                width={8}
+                height={8}
+              />
+            }
             onClick={() => handleChange(quantity + 1)}
             style={{ background: "white" }}
             disabled={quantity >= product.maxQuantity}
