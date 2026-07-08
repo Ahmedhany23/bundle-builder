@@ -43,7 +43,7 @@ export function ReviewLineItem({
     <div className="line-item">
       <div className="product">
         <div className="thumb">
-          <img src={product.image} alt={product.title} />
+          <img src={product.image} alt={product.title} loading="lazy" width={713} />
         </div>
         <p className="product-name">
           {product.title}{" "}
@@ -57,7 +57,7 @@ export function ReviewLineItem({
             variant="decrement"
             size="sm"
             ariaLabel={`Decrease quantity for ${product.title}`}
-            icon={<img src={MinusIcon} alt="Minus icon" />}
+            icon={<img src={MinusIcon} alt="Minus icon" loading="lazy" width={8} height={10} />}
             onClick={() => handleChange(quantity - 1)}
             style={{ background: "white" }}
             disabled={quantity <= product.minQuantity}
@@ -68,7 +68,7 @@ export function ReviewLineItem({
             variant="increment"
             size="sm"
             ariaLabel={`Increase quantity for ${product.title}`}
-            icon={<img src={PlusIcon} alt="Plus icon" />}
+            icon={<img src={PlusIcon} alt="Plus icon" loading="lazy" width={8} height={8} />}
             onClick={() => handleChange(quantity + 1)}
             style={{ background: "white" }}
             disabled={quantity >= product.maxQuantity}

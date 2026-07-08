@@ -46,7 +46,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       <div className="product-media">
-        <img src={product.image} alt={product.title} />
+        <img src={product.image} alt={product.title} loading="lazy" width={713} />
       </div>
 
       <div className="product-content">
@@ -81,6 +81,8 @@ export function ProductCard({ product }: ProductCardProps) {
                         import.meta.url,
                       ).href
                     }
+                    loading="lazy"
+                    width={28}
                   />
                 }
                 className={` ${activeVariantId === variant.id ? "selected" : ""}`}
@@ -100,7 +102,7 @@ export function ProductCard({ product }: ProductCardProps) {
                   variant="decrement"
                   size="sm"
                   ariaLabel={`Decrease quantity for ${product.title}`}
-                  icon={<img src={MinusIcon} alt="Minus icon" />}
+                  icon={<img src={MinusIcon} alt="Minus icon" loading="lazy" width={8} height={10} />}
                   onClick={() => handleChange(quantity - 1)}
                   disabled={quantity <= product.minQuantity}
                 />
@@ -110,7 +112,7 @@ export function ProductCard({ product }: ProductCardProps) {
                   variant="increment"
                   size="sm"
                   ariaLabel={`Increase quantity for ${product.title}`}
-                  icon={<img src={PlusIcon} alt="Plus icon" />}
+                  icon={<img src={PlusIcon} alt="Plus icon" loading="lazy" width={8} height={8} />}
                   onClick={() => handleChange(quantity + 1)}
                   disabled={quantity >= product.maxQuantity}
                 />

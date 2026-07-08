@@ -25,25 +25,29 @@ const STEPS: {
     stepNumber: 1,
     title: "Choose your cameras",
     category: "camera",
-    icon: <img src={CamerIcon} alt="Camera icon" />,
+    icon: (
+      <img src={CamerIcon} alt="Camera icon" loading="lazy" width={30} height={30} />
+    ),
   },
   {
     stepNumber: 2,
     title: "Choose your plan",
     category: "plan",
-    icon: <img src={PlanIcon} alt="plan icon" />,
+    icon: <img src={PlanIcon} alt="plan icon" loading="lazy" width={30} height={31} />,
   },
   {
     stepNumber: 3,
     title: "Choose your sensors",
     category: "sensor",
-    icon: <img src={SensorIcon} alt="Sensor icon" />,
+    icon: <img src={SensorIcon} alt="Sensor icon" loading="lazy" width={32} height={32} />,
   },
   {
     stepNumber: 4,
     title: "Add extra protection",
     category: "accessory",
-    icon: <img src={AccessoryIcon} alt="Accessory icon" />,
+    icon: (
+      <img src={AccessoryIcon} alt="Accessory icon" loading="lazy" width={30} height={30} />
+    ),
   },
 ];
 
