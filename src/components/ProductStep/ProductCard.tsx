@@ -3,11 +3,11 @@ import { getQuantity } from "../../utils/selectors";
 import type { Product } from "../../types";
 import { useSelectedVariant } from "../../hooks/useSelectedVariant";
 import { Button } from "../shared/Button";
+import { useIsDesktop } from "../../context/MediaQueryContext";
 
 import PlusIcon from "../../assets/icons/add-icon.svg";
 import MinusIcon from "../../assets/icons/minus-icon.svg";
 import { PriceDisplay } from "../shared/PriceDisplay";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 type ProductCardProps = {
   product: Product;
@@ -16,13 +16,13 @@ type ProductCardProps = {
 export function ProductCard({ product }: ProductCardProps) {
   const { state, dispatch } = useBundle();
   const { activeVariantId, setActiveVariantId } = useSelectedVariant(product);
-
-  const isDesktop = useMediaQuery("(min-width: 1441px)");
+  const isDesktop = useIsDesktop();
 
   const quantity = getQuantity(state.items, product.id, activeVariantId);
   const isSelected = quantity > 0;
 
   const isPlan = product.category === "plan";
+  const decrementTooltipId = `decrement-tip-${product.id}`;
 
   const handleChange = (next: number) => {
     dispatch({
@@ -52,6 +52,7 @@ export function ProductCard({ product }: ProductCardProps) {
           alt={product.title}
           loading="lazy"
           width={713}
+          height={540}
         />
       </div>
 
@@ -74,7 +75,7 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
 
         {hasVariants && (
-          <div className="swatches">
+          <div className="swatches" role="group" aria-label={`Color options for ${product.title}`}>
             {product.variants!.map((variant) => (
               <Button
                 key={variant.id}
@@ -83,6 +84,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 size="sm"
                 onClick={() => setActiveVariantId(variant.id)}
                 iconPosition="left"
+                aria-pressed={activeVariantId === variant.id}
                 icon={
                   <img
                     src={
@@ -93,6 +95,7 @@ export function ProductCard({ product }: ProductCardProps) {
                     }
                     loading="lazy"
                     width={28}
+                    height={28}
                   />
                 }
                 className={` ${activeVariantId === variant.id ? "selected" : ""}`}
@@ -107,11 +110,18 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="product-controls">
             {!isPlan ? (
               <>
+                {/* Hidden tooltip that explains why decrement is locked for required products */}
+                {product.required && (
+                  <span id={decrementTooltipId} className="sr-only">
+                    {product.title} is required and cannot be removed.
+                  </span>
+                )}
                 <Button
                   buttonType="icon"
                   variant="decrement"
                   size="sm"
                   ariaLabel={`Decrease quantity for ${product.title}`}
+                  aria-describedby={product.required ? decrementTooltipId : undefined}
                   icon={
                     <img
                       src={MinusIcon}
@@ -123,6 +133,11 @@ export function ProductCard({ product }: ProductCardProps) {
                   }
                   onClick={() => handleChange(quantity - 1)}
                   disabled={product.required || quantity <= product.minQuantity}
+                  title={
+                    product.required
+                      ? "This item is required and cannot be removed."
+                      : undefined
+                  }
                 />
                 <span className="count">{quantity}</span>
                 <Button

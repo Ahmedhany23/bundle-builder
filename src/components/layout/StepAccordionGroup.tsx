@@ -94,11 +94,7 @@ export function StepAccordionGroup() {
               <ProductStepSection products={stepProducts} />
             </div>
             <div
-              style={{
-                textAlign: "center",
-                marginInline: "auto",
-                marginTop: "15px",
-              }}
+              className="step-footer"
             >
               {nextStep && (
                 <Button
@@ -118,3 +114,4 @@ export function StepAccordionGroup() {
     </section>
   );
 }
+

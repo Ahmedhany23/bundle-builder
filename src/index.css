@@ -61,6 +61,18 @@ html {
   scroll-behavior: smooth;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -77,7 +89,6 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   gap: 29px;
-  overflow: hidden;
 }
 
 .hero {
@@ -225,6 +236,12 @@ body {
   .step-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+.step-footer {
+  text-align: center;
+  margin-inline: auto;
+  margin-top: 15px;
 }
 
 .product-card {
@@ -638,24 +655,6 @@ body {
   text-align: right;
 }
 
-.price-old {
-  display: block;
-  color: #6f7882;
-  text-decoration: line-through;
-  font-size: clamp(0.75rem, 0.6571rem + 0.381vw, 1rem);
-  line-height: 1;
-  margin-bottom: 3px;
-  font-family: "Gilroy-Medium", sans-serif;
-}
-
-.price-new {
-  display: block;
-  color: var(--accent);
-  font-size: clamp(0.75rem, 0.6571rem + 0.381vw, 1rem);
-  line-height: 1;
-  font-family: "Gilroy-SemiBold", sans-serif;
-}
-
 @media (min-width: 1441px) {
   .line-item .price,
   .shipping .price {
@@ -678,19 +677,6 @@ body {
   align-items: center;
   gap: 10px;
   min-width: 0;
-}
-
-.badge {
-  width: 28px;
-  height: 28px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.85);
-  display: grid;
-  place-items: center;
-  box-shadow: inset 0 0 0 1px rgba(31, 31, 36, 0.06);
-  color: var(--accent);
-  font-size: 0.8rem;
-  font-weight: 800;
 }
 
 .plan-name {
@@ -838,10 +824,6 @@ body {
 }
 
 @media (max-width: 660px) {
-  .bundle-page {
-    padding: 0;
-  }
-
   .bundle-layout {
     width: 100%;
   }
@@ -849,11 +831,6 @@ body {
   .review {
     padding-left: 20px;
     padding-right: 20px;
-  }
-
-  .seal {
-    width: 92px;
-    height: 92px;
   }
 
   .step-grid {

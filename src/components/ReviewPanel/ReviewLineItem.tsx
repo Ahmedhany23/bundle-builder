@@ -1,11 +1,11 @@
 import type { Product } from "../../types";
 import { useBundle } from "../../context/BundleContext";
 import { Button } from "../shared/Button";
+import { useIsDesktop } from "../../context/MediaQueryContext";
 
 import MinusIcon from "../../assets/icons/minus-icon.svg";
 import PlusIcon from "../../assets/icons/add-icon.svg";
 import { PriceDisplay } from "../shared/PriceDisplay";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 type ReviewLineItemProps = {
   product: Product;
@@ -19,6 +19,8 @@ export function ReviewLineItem({
   quantity,
 }: ReviewLineItemProps) {
   const { dispatch } = useBundle();
+  const isDesktop = useIsDesktop();
+  const decrementTooltipId = `review-decrement-tip-${product.id}`;
 
   const handleChange = (next: number) => {
     dispatch({
@@ -36,8 +38,6 @@ export function ReviewLineItem({
   const lineCompareAt =
     product.compareAtPrice != null ? product.compareAtPrice * quantity : null;
 
-  const isDesktop = useMediaQuery("(min-width: 1441px)");
-
   const variantName = product.variants.find((v) => v.id === variantId)?.name;
 
   return (
@@ -49,20 +49,28 @@ export function ReviewLineItem({
             alt={product.title}
             loading="lazy"
             width={41}
+            height={41}
           />
         </div>
         <p className="product-name">
           {product.title}{" "}
-          <span hidden={!variantName}>({variantName})</span>{" "}
+          {variantName && <span>({variantName})</span>}{" "}
         </p>
       </div>
       <div className="line-item-right">
         <div className="qty">
+          {/* Hidden tooltip read by screen readers to explain why decrement is locked */}
+          {product.required && (
+            <span id={decrementTooltipId} className="sr-only">
+              {product.title} is required and cannot be removed.
+            </span>
+          )}
           <Button
             buttonType="icon"
             variant="decrement"
             size="sm"
             ariaLabel={`Decrease quantity for ${product.title}`}
+            aria-describedby={product.required ? decrementTooltipId : undefined}
             icon={
               <img
                 src={MinusIcon}
@@ -75,6 +83,11 @@ export function ReviewLineItem({
             onClick={() => handleChange(quantity - 1)}
             style={{ background: "white" }}
             disabled={product.required || quantity <= product.minQuantity}
+            title={
+              product.required
+                ? "This item is required and cannot be removed."
+                : undefined
+            }
           />
           <span className="count">{quantity}</span>
           <Button

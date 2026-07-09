@@ -90,16 +90,13 @@ export function ReviewPromoRow() {
         >
           Checkout
         </Button>
-        <Button
-          buttonType="text"
-          variant="secondary"
-          size="md"
+        <button
           onClick={handleSave}
           className="later"
-          style={{ width: "100%" }}
+          style={{ width: "100%", cursor: "pointer" }}
         >
           {saved ? "Saved!" : "Save my system for later"}
-        </Button>
+        </button>
       </div>
     </div>
   );

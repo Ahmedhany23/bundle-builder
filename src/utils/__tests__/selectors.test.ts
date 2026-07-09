@@ -1,6 +1,11 @@
 import { describe, it, expect } from "vitest";
 import type { Product, SelectedItem } from "../../types";
-import { getItemsForCategory, getQuantity, getSelectedCount, getSelectedCountForCategory } from "../selectors";
+import {
+  getItemsForCategory,
+  getQuantity,
+  getSelectedCount,
+  getSelectedCountForCategory,
+} from "../selectors";
 
 function makeProduct(overrides: Partial<Product> & { id: string }): Product {
   return {
@@ -131,4 +136,3 @@ describe("getItemsForCategory", () => {
     expect(getItemsForCategory([], categoryProducts)).toEqual([]);
   });
 });
-    

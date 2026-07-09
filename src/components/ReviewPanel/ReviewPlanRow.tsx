@@ -5,17 +5,16 @@ import type { Product } from "../../types";
 
 import WyzeIcon from "../../assets/icons/wyze-icon.svg";
 import { PriceDisplay } from "../shared/PriceDisplay";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { useIsDesktop } from "../../context/MediaQueryContext";
 
 const products = productsData as Product[];
 
 export function ReviewPlanRow() {
   const { state } = useBundle();
+  const isDesktop = useIsDesktop();
   const planProducts = products.filter((p) => p.category === "plan");
   const items = getItemsForCategory(state.items, planProducts);
   const item = items[0];
-
-  const isDesktop = useMediaQuery("(min-width: 1441px)");
 
   if (!item) return null;
 
@@ -30,9 +29,8 @@ export function ReviewPlanRow() {
       <div className="plan-row">
         <div className="plan-brand">
           <img src={WyzeIcon} alt="Wyze icon" width={14} height={17} />
-          <div className="plan-name">
-            Cam <span className="accent">Unlimited</span>
-          </div>
+          {/* Read the plan name from data — not hardcoded */}
+          <div className="plan-name">{product.title}</div>
         </div>
         <PriceDisplay
           compareAtPrice={product.compareAtPrice}
@@ -40,7 +38,7 @@ export function ReviewPlanRow() {
           discountLabel={product.discountLabel}
           direction={isDesktop ? "row" : "column"}
           align="left"
-          suffix="mo"
+          suffix=" /mo"
         />
       </div>
     </>
